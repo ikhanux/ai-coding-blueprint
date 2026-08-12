@@ -8,6 +8,15 @@ AI can write the code. It cannot run the project. This is the system that does.
 
 ---
 
+## Start here
+
+**Read [`docs/HOW_TO_OPERATE.md`](docs/HOW_TO_OPERATE.md) first.** It is the step by step for
+the human running this: your first session on an empty folder, every session after that, how to
+split a build into phases, and how to reuse this on your next project. Everything else in this
+README is background, not instructions.
+
+---
+
 ## The problem this solves
 
 It is not that the AI writes bad code. It usually does not.
@@ -66,11 +75,8 @@ CHANGELOG.md                       what changed, and how to update safely
 LICENSE                            MIT
 ```
 
-**Start with `docs/HOW_TO_OPERATE.md`.** It is the step by step for the human running this:
-your first session on an empty folder, every session after that, how to split a build into
-phases, and how to reuse this on your next project. It also covers which model to use for what,
-and why long sessions start forgetting things. Everything below is reference. That file is the
-walkthrough.
+See "Start here" above: `docs/HOW_TO_OPERATE.md` is the walkthrough, everything below is
+reference for setting the files up before that first session.
 
 ## Setup (about 5 minutes)
 
