@@ -1,0 +1,15 @@
+# Next session prompt
+
+Paste this to start the next session cold.
+
+---
+
+Read `CLAUDE.md` and `docs/PROJECT_STATUS.md` first.
+
+**Where we left off:** [what was just finished]
+
+**Next up:** [the next concrete task, with enough detail to start without asking
+clarifying questions]
+
+**Watch out for:** [any known trap, flaky thing, or decision already settled that
+shouldn't be re-opened]

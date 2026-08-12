@@ -1,0 +1,17 @@
+{
+  "description": "Project settings. The Stop hook enforces CLAUDE.md rule 1: a reply may not claim something was verified, tested or deployed unless a matching command actually ran.",
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR}/.claude/hooks/verify-claims.py\"",
+            "timeout": 10,
+            "statusMessage": "Checking verification claims"
+          }
+        ]
+      }
+    ]
+  }
+}
