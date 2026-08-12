@@ -72,6 +72,8 @@ working sessions, driven entirely through Claude Code, run by someone who does n
 
 Everything here is the real thing, stripped of anything specific to that project.
 
+Built by [Usarion](https://usarion.com).
+
 ---
 
 ## What's included
