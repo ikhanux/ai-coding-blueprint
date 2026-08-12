@@ -1,10 +1,14 @@
 # The AI Coding Blueprint for Non-Developers
+### A repeatable system for shipping a real product with AI, without losing the thread
 
 **Version 1.0.0** · MIT licensed · See [CHANGELOG.md](CHANGELOG.md)
 
-A repeatable system for shipping a real product with AI, without losing the thread.
+> AI can write the code. It cannot run the project. This is the system that does.
 
-AI can write the code. It cannot run the project. This is the system that does.
+**715 commits · 127 working sessions · 1 non-developer · 1 live product**
+
+Built [Sociarion](https://sociarion.com) from an empty folder to a running multi-tenant SaaS.
+This is the system that did it, packaged.
 
 ---
 
@@ -17,7 +21,7 @@ README is background, not instructions.
 
 ---
 
-## The problem this solves
+## The real problem with building software using AI
 
 It is not that the AI writes bad code. It usually does not.
 
@@ -26,9 +30,18 @@ project, the AI re-discovers decisions you already made, and it rebuilds things 
 You have no idea what is finished and what is half done. You keep moving and the product does
 not.
 
-That is a project management problem, and AI coding tools ship with no answer to it.
+Then somewhere in there you get told something is working when it is not, and you find out two
+weeks later.
 
-## What this gives your project
+None of that is a coding problem. It is a project management problem, and AI tools ship with no
+answer to it at all.
+
+## What this is
+
+The operating system that goes around the AI. Nine files. About five minutes to set up. Free,
+MIT licensed.
+
+It gives your project things it does not have by default:
 
 | | |
 |---|---|
@@ -49,19 +62,21 @@ Files do not have a context window. A fresh session reads them at full detail, e
 written, every time.
 
 **Anything that only lives in a conversation will eventually be forgotten. Anything written to
-a file will not.** That is the reason this is a set of files rather than a set of prompts.
+a file will not.** That is the entire reason this exists in the shape it does.
 
-## Not a theory
+## This is not a theory
 
-This is the setup that built [Sociarion](https://sociarion.com), a multi-tenant social media
-automation platform, from an empty folder to a live product. 715 commits across 127 working
-sessions, driven entirely through Claude Code, run by someone who does not write code.
+It is the setup that built [Sociarion](https://sociarion.com), a multi-tenant social media
+automation platform, from an empty folder to a live product. 715 commits across 127 logged
+working sessions, driven entirely through Claude Code, run by someone who does not write code.
 
 Everything here is the real thing, stripped of anything specific to that project.
 
 ---
 
-## What is in here
+## What's included
+
+Nine files. About five minutes. Nothing to sign up for.
 
 ```
 CLAUDE.md.template                 rename to CLAUDE.md, fill in every [BRACKET]
@@ -75,8 +90,38 @@ CHANGELOG.md                       what changed, and how to update safely
 LICENSE                            MIT
 ```
 
-See "Start here" above: `docs/HOW_TO_OPERATE.md` is the walkthrough, everything below is
-reference for setting the files up before that first session.
+1. **`CLAUDE.md.template`, the project's memory.** The file the AI reads automatically at the
+   start of every session: who you are, how you want to be spoken to, what the project is, what
+   counts as done. Fill it in once. Stop re-explaining your project forever.
+2. **`docs/HOW_TO_OPERATE.md`, the part written for you.** Six numbered jobs in plain language:
+   your first session on an empty folder, every session after that, splitting a long build into
+   phases, what to check before closing a session, and reusing the whole thing on your next
+   project. No code in it.
+3. **`docs/PROJECT_STATUS.md.template`, where you actually are.** One short file that is always
+   the current truth, with a phase table you can read in ten seconds.
+4. **`docs/NEXT_SESSION_PROMPT.md.template`, no cold starts.** The handoff note. Open tomorrow's
+   session and say "go" instead of spending twenty minutes rebuilding context.
+5. **The verification hook** (`.claude/hooks/verify-claims.py`). Runs automatically when the AI
+   finishes a reply. If it claims something was tested, verified, or deployed, the hook checks
+   whether a matching command actually ran. If not, the reply is blocked. Copy it in, it works,
+   no editing.
+6. **The settings file** (`.claude/settings.json`). Registers the hook. Copy as is.
+7. **Session history folder** (`docs/history/`). One file per session, so the project has a
+   record instead of living in your head.
+
+## Who it is for
+
+- Founders and operators building a real product with AI, who cannot read the code
+- Anyone whose AI project has stalled in a pile of sessions that never became a thing
+- People who keep re-explaining the same project every single time they open a session
+- Developers who want the phase and handoff structure and will ignore the rest, which is fine
+
+## Who it is not for
+
+- One-off scripts and throwaway experiments. The structure costs more than it returns.
+- Anyone who wants the AI to go faster by planning less. This does the opposite deliberately.
+
+---
 
 ## Setup (about 5 minutes)
 
@@ -107,6 +152,10 @@ run", which is a real jump and is not a guarantee.
 The hook is Claude Code specific, because it uses Claude Code's hook system. The rest of the
 structure works with any AI coding tool.
 
+The templates are a starting shape, not a finished process. Rewrite the rules to match how your
+project actually builds and deploys, and delete any rule that does not apply to you rather than
+leaving it sitting there doing nothing.
+
 ## Updating
 
 See [CHANGELOG.md](CHANGELOG.md). Short version: the two files in `.claude/` are safe to
@@ -116,3 +165,11 @@ overwrite because they hold nothing of yours. Never overwrite `CLAUDE.md`,
 ## Licence
 
 MIT. Use it, change it, ship it. No attribution required.
+
+---
+
+## Get the blueprint
+
+Free, MIT licensed. Unzip into your project folder, rename three files, fill in the blanks.
+[`docs/HOW_TO_OPERATE.md`](docs/HOW_TO_OPERATE.md) walks you through your first session from an
+empty folder.
