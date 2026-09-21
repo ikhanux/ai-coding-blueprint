@@ -180,9 +180,14 @@ tool installed and signed in; ignore them if you don't use GitHub issues.
 
 A subagent is a separate Claude with its own instructions and its own memory, started by the
 main session for one job and then finished. The main session stays the lead: it plans,
-delegates, checks and reports; the specialists do the work. Six ship with the blueprint:
+delegates, checks and reports; the specialists do the work. Ten ship with the blueprint:
 
-- **builder** writes the code for one well-defined piece of work
+- **ui-ux-designer** decides layout and hierarchy for a new screen before anyone builds it,
+  and writes a one-page brief the builders work from
+- **page-scaffolder** creates a new screen and wires up its address
+- **ui-builder** builds and changes the visual pieces, using your project's UI kit
+- **ux-copy** writes every word the user sees, held to your glossary and messaging rules
+- **builder** writes the code for any other well-defined piece of work
 - **code-reviewer** checks every finished change against your conventions and rules,
   reports problems, fixes nothing
 - **security-reviewer** looks only for things an attacker could actually exploit, and gives
@@ -197,9 +202,10 @@ delegates, checks and reports; the specialists do the work. Six ship with the bl
 Why this shape: a builder that reviews its own work misses the same things twice. Separate
 eyes catch more, and the reviewer's verdict becomes part of the proof rule 1 asks for.
 
-As the project grows, ask Claude to add specialists for your stack ("draft a `ui-builder`
-agent from `builder.md` that knows our component library") and to add a row to the routing
-table in `/lead` and the list in `CLAUDE.md`.
+No user interface? Delete the UI agents; `CLAUDE.md` says which lines go with them. As the
+project grows, ask Claude to add specialists for your stack ("draft a `migration-writer`
+agent from `builder.md`") and to add a row to the routing table in `/lead` and the list in
+`CLAUDE.md`.
 
 ### Hooks: the things that run without being asked
 

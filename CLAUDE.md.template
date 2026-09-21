@@ -68,8 +68,8 @@ Deeper model where a mistake is expensive, faster model where it is cheap to und
 | Planning, phases, architecture, reviewing a finished phase, hard debugging | Opus |
 | A problem both have already failed on more than once | Fable |
 
-Subagents pin their own model in their frontmatter (`code-reviewer`, `security-reviewer` and
-`ux-reviewer` on Opus; `builder`, `debugger` and `responsive-reviewer` on Sonnet). Say which model ran the session in the
+Subagents pin their own model in their frontmatter (the reviewers and `ui-ux-designer` on
+Opus; the builders, `ux-copy`, `debugger` and `responsive-reviewer` on Sonnet). Say which model ran the session in the
 `/wrap-up` recap. If a planning or review task arrives on the fast model, say so rather than
 proceeding quietly.
 
@@ -147,7 +147,11 @@ Use `/lead <task>` for the full orchestration flow, but apply the same routing e
 command isn't invoked:
 
 - Codebase questions → `Explore` (parallel when independent)
-- Any new or changed code → `builder`
+- Layout / hierarchy / interaction decision not already established → `ui-ux-designer`
+  (design brief, no code) before anything is built
+- New screen / route → `page-scaffolder`; new or changed component or styling → `ui-builder`
+- Any new or changed user-facing text → `ux-copy`
+- Any other new or changed code → `builder`
 - Unclear failure → `debugger` before any fix
 - Every finished change → `code-reviewer`; plus `security-reviewer` when it renders external
   content, touches URLs / storage / tokens / auth, or adds a dependency
@@ -157,14 +161,16 @@ command isn't invoked:
 
 Exceptions where the main session may edit directly: config files, docs, and `.claude/` itself.
 
-[As the project grows, add specialists for your stack: e.g. a `page-scaffolder` for new routes,
-a `ui-builder` that knows your component library, a `ux-copy` agent held to your terms
-glossary, a `migration-writer` for your database. Ask Claude to draft one from `builder.md`
-and add a row here and in `/lead`'s routing table.]
+[If the project has no user interface, delete the UI agents and their lines above. As the
+project grows, add specialists for your stack (a `migration-writer`, an `api-builder`): ask
+Claude to draft one from `builder.md` and add a row here and in `/lead`'s routing table.]
 
 **Subagents** (`.claude/agents/`)
 
 - `builder`: implements one well-defined unit of work, following the conventions above
+- `ui-ux-designer`: layout / hierarchy / interaction design briefs, before implementation
+- `page-scaffolder`: new routed screens; `ui-builder`: new or changed components
+- `ux-copy`: user-facing text, held to `.ai/PROJECT.md`'s Terms and Messaging rules
 - `code-reviewer`: convention and correctness review after any change; reports, doesn't fix
 - `security-reviewer`: exploitable findings only; verdict SAFE TO MERGE or BLOCK
 - `debugger`: root-causes failures before anyone fixes them
