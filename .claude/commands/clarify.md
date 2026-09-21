@@ -9,14 +9,24 @@ Do not implement yet.
 
 ## 1. Clarify
 
-Ask at least 3 clarifying questions covering scope, success criteria, and technical context.
-If anything is still unclear after that, ask more; don't cap at 3. Skip a question only if the
-task already answers it. No filler, no yes/no questions.
+Interview the user about this task until you share an understanding of it. Walk down the
+design tree: each answer opens the next question, and dependencies between decisions get
+resolved one at a time rather than all at once. Ask at least 3 questions covering scope,
+success criteria, and technical context; if anything is still unclear after that, keep
+going. Don't cap it.
 
-Ground the questions in this repo: which feature area and actor from `.ai/PROJECT.md` the
-work belongs to, which existing file or pattern it should follow, what "done" looks like when
-the user tries it. Add examples and possible edge cases so the intent is unambiguous. Stop and
-wait for the answers.
+Rules for the questions:
+
+- **If the codebase can answer it, don't ask.** Read the code (or send `Explore`) and state
+  what you found instead.
+- **Give your recommended answer with every question**, and why. The user should be
+  choosing, not generating.
+- Ground them in this repo: which feature area and actor from `.ai/PROJECT.md` the work
+  belongs to, which existing file or pattern it should follow, what "done" looks like when
+  the user tries it. Add examples and edge cases so the intent is unambiguous.
+- No filler, no yes/no questions, nothing the task already answers.
+
+Stop and wait for the answers.
 
 ## 2. Plan
 

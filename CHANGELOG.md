@@ -33,10 +33,20 @@ new layout, so read "Migrating from 1.x" below before adopting.
   `main`, `reset --hard`, `rebase`, `branch -D`, `clean -f`, discarding all working changes,
   and stash drops. Needs only python3, same as the other hook. The push-to-`main` block is
   one clearly marked section you can delete if you work on `main`.
-- **Eleven slash commands** in `.claude/commands/`: `/lead`, `/wrap-up`, `/commit`,
-  `/clarify`, `/spec`, `/task`, `/review`, `/explore`, `/issue-read`, `/fix-issue`,
-  `/pr-summary`. None hardcode a build tool; they all read the **Commands** table in
-  `CLAUDE.md`.
+- **Twelve slash commands** in `.claude/commands/`: `/lead`, `/goal`, `/wrap-up`,
+  `/commit`, `/clarify`, `/spec`, `/task`, `/review`, `/explore`, `/issue-read`,
+  `/fix-issue`, `/pr-summary`. None hardcode a build tool; they all read the **Commands**
+  table in `CLAUDE.md`. `/goal` works in rounds with a separate evaluator judging whether
+  the success condition is met. `/clarify` gives a recommended answer with every question
+  and reads the codebase instead of asking when it can.
+- **`.claude/hooks/format-on-edit.py`**: PostToolUse hook that runs the project's Format
+  command after every Write / Edit, read from the Commands table in `CLAUDE.md`. Off until
+  that row is filled in. Never blocks.
+- **`.claude/statusline.sh`**: model · folder · branch · context used. python3 only.
+- **SessionStart hook**: git branch and uncommitted changes shown when a session opens.
+- **`docs/TIPS.md`**: what ships on by default and why; `/loop`, `/goal`, language server
+  and other plugins, skills and skill packs, session replays, output compression; and the
+  things deliberately left out (undocumented env flags, run-the-suite-on-every-Stop).
 - **Ten subagents** in `.claude/agents/`, all stack-neutral (they read the UI kit, tokens
   and conventions from `CLAUDE.md`, and the terms and rules from `.ai/PROJECT.md`):
   `ui-ux-designer` (Opus, brief before build), `page-scaffolder`, `ui-builder`, `builder`,

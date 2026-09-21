@@ -133,6 +133,7 @@ Project-level config lives in `.claude/`. Machine-specific overrides go in
 | `/review [target]` | Senior-engineer review of changed files |
 | `/commit` | Draft a conventional commit message for staged changes |
 | `/wrap-up` | End-of-session: update `.ai/STATUS.md`, verify, commit, push, name the model |
+| `/goal <goal>` | Build → check → separate evaluator → repeat, max 5 rounds, honest report |
 | `/explore <task>` | Parallel codebase exploration before a larger change |
 | `/issue-read <#>` · `/fix-issue <#>` · `/pr-summary` | GitHub issue/PR helpers (need `gh` CLI) |
 
@@ -178,9 +179,11 @@ Claude to draft one from `builder.md` and add a row here and in `/lead`'s routin
 - `responsive-reviewer`: breakpoints, touch targets, overflow; hands back a manual
   render-check list it cannot run itself
 
-**Guardrails** (`.claude/settings.json` + `.claude/hooks/git-guard.sh`)
+**Guardrails and hooks** (`.claude/settings.json` + `.claude/hooks/`)
 
 Read-only git commands are pre-allowed; add your build tool to the allow list (e.g.
-`Bash(npm *)`). A `PreToolUse` hook blocks force-pushes, pushes to `main`, `reset --hard`,
-`rebase`, `branch -D`, `clean -f`, and discarding all working changes. Do those manually if
-genuinely needed.
+`Bash(npm *)`). `git-guard.sh` (PreToolUse) blocks force-pushes, pushes to `main`,
+`reset --hard`, `rebase`, `branch -D`, `clean -f`, and discarding all working changes; do
+those manually if genuinely needed. `format-on-edit.py` (PostToolUse) runs the Format command
+above after every edit. A SessionStart hook shows git state when a session opens. The status
+line shows model, folder, branch and context used.

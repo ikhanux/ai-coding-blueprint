@@ -87,11 +87,14 @@ CLAUDE.md.template                 rename to CLAUDE.md, fill in every [BRACKET]
 .ai/PROJECT.md.template            rename to PROJECT.md: what the product IS
 .ai/STATUS.md.template             rename to STATUS.md: where the build IS
 docs/HOW_TO_OPERATE.md             read this one yourself, start to finish
+docs/TIPS.md                       what else is on, and what is worth turning on
 
 .claude/settings.json              registers the hooks and permissions, copy as is
 .claude/hooks/verify-claims.py     blocks unproven "verified / tested / deployed"
 .claude/hooks/git-guard.sh         blocks the git commands that lose work
-.claude/commands/                  11 slash commands: /lead, /wrap-up, /commit, /spec ...
+.claude/hooks/format-on-edit.py    runs your formatter after every edit
+.claude/statusline.sh              model · folder · branch · context used
+.claude/commands/                  12 slash commands: /lead, /goal, /wrap-up, /commit, /spec ...
 .claude/agents/                    10 subagents: designer, builders, copywriter, reviewers, debugger
 
 CHANGELOG.md                       what changed, and how to update safely
@@ -119,16 +122,21 @@ LICENSE                            MIT
    force-pushes, history rewrites, throwing away uncommitted work, and pushing straight to
    `main`. The AI asks you to do those yourself, which is the point.
 7. **Slash commands** (`.claude/commands/`). `/lead <task>` puts the AI in lead-developer
-   mode. `/wrap-up` ends the session properly. `/clarify`, `/spec`, `/task`, `/review`,
-   `/commit`, `/explore` cover the rest of the loop. Three GitHub helpers if you use issues.
+   mode. `/goal` works in rounds until a separate judge says the goal is met. `/wrap-up`
+   ends the session properly. `/clarify`, `/spec`, `/task`, `/review`, `/commit`,
+   `/explore` cover the rest of the loop. Three GitHub helpers if you use issues.
 8. **Subagents** (`.claude/agents/`). A designer that writes the brief before anything is
    built; a page scaffolder, a UI builder and a general builder that write; a copywriter
    held to your glossary; a code reviewer, a security reviewer, a UX reviewer and a
    responsive reviewer that only report; a debugger that finds the cause before anyone
    fixes. The main session stays the lead and never reviews its own work. No user
    interface? Delete the UI ones.
-9. **The settings file** (`.claude/settings.json`). Registers both hooks, pre-allows
-   read-only git, denies reading `.env`. Add your build tool to the allow list and you are done.
+9. **The settings file** (`.claude/settings.json`). Registers the hooks and the status line,
+   pre-allows read-only git, denies reading `.env`. Add your build tool to the allow list and
+   you are done. Also on: git state shown at session start, and your formatter run after
+   every edit (`format-on-edit.py`, reads the command from `CLAUDE.md`).
+10. **`docs/TIPS.md`.** What is already on and why, and the handful of things worth turning
+    on yourself: `/loop`, a language server plugin, browser automation, skills.
 
 ## Who it is for
 

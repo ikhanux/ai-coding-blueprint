@@ -168,6 +168,7 @@ The ones you will actually use:
 |---|---|
 | `/lead <task>` | Claude acts as the lead developer: breaks the task up, hands each piece to a specialist (below), reviews the result, runs the checks, reports back. **Use this for anything that touches the code.** |
 | `/wrap-up` | Ends the session properly (Job 4). |
+| `/goal <goal>` | Claude works in rounds, build → check → judged by a separate reviewer, until the goal is met or five rounds are up. Give it a goal you can check ("the Check command passes", "the form rejects an empty email"). |
 | `/commit` | Writes the commit message and asks before committing. |
 | `/clarify <task>` | Claude asks you questions and writes a plan before touching anything. Good for a task you can't fully describe yet. |
 | `/spec <feature>` then `/task <spec> T1` | For a bigger feature: write it up as numbered tasks first, then do them one at a time. |
@@ -214,6 +215,13 @@ agent from `builder.md`") and to add a row to the routing table in `/lead` and t
   to either run it or say plainly what it did not check.
 - **git-guard** runs before any command. It blocks the handful of git operations that can
   lose work. You'll be asked to do those yourself, which is the point.
+- **format-on-edit** runs after every file Claude writes. It runs your formatter, read from
+  the Format row in `CLAUDE.md`. Fill that row in and it's on; leave it as "none" and it's
+  off.
+- **Session start** shows Claude your branch and uncommitted changes the moment a session
+  opens.
+- **The status line** at the bottom of the terminal shows the model, the folder, the branch
+  and how full the context window is. `docs/TIPS.md` says what to do with that number.
 
 ### The two files that hold your project
 
