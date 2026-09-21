@@ -1,0 +1,83 @@
+# Project
+
+[Two or three sentences a stranger could read and understand what this is, who it is for, and
+what makes it different. Write it once, keep it current. `CLAUDE.md` imports this file at
+the top of every session, so this is the first thing Claude knows about the product.]
+
+[One sentence on scope and boundaries, e.g. "This repo is the frontend only; the API lives
+elsewhere and is not worked on here." Boundaries stop Claude proposing work you do not want.]
+
+## Internal architecture
+
+[Short. The `CLAUDE.md` Architecture section has the how; this is the shape.]
+
+- **Entry**: `[file]` → `[what it sets up]`.
+- **Where things live**: `[e.g. pages in src/pages/, shared components in src/components/]`.
+- **Data**: `[e.g. comes in as props from the backend / fetched from API X / local SQLite]`.
+
+Dev commands and coding conventions: `CLAUDE.md`. Where the build is: `STATUS.md`.
+
+## Positioning
+
+[What the product promises, in the order it should be said. If a homepage or a pitch leads
+with three things, list those three here in order. Claude will hold copy and layout to this.
+Delete the section if it is a tool with no audience-facing story.]
+
+**Core line:** [One sentence.]
+
+1. **[Claim one]**: [the one-line reason it is true]
+2. **[Claim two]**: [...]
+3. **[Claim three]**: [...]
+
+### Messaging rules
+
+[Things the copy must never do, e.g. "never compare on price", "no countdown timers",
+"never call it X". Each one saves a round of correction later.]
+
+## Terms
+
+Use these exactly. Do not invent synonyms for defined terms.
+
+| Term | Meaning |
+|------|---------|
+| [Internal name, acronym, or jargon you use in chat] | [Plain definition] |
+| [A user-facing word with a specific meaning here] | [What it means, and what it must not be called instead] |
+| [A known past incident worth remembering] | [What happened, what fixed it, so it isn't re-investigated] |
+
+## Actors and roles
+
+[Who uses this and what each can see or do. A table if there is more than one.]
+
+| Actor | Can |
+|-------|-----|
+| [e.g. Visitor] | [browse, search] |
+| [e.g. Member] | [buy, download, review] |
+| [e.g. Admin] | [everything above plus moderation] |
+
+## Feature areas
+
+[The product broken into areas, so a task can be placed. One line each. Phases in
+`STATUS.md` are built from these.]
+
+- **[Area]**: [what it covers]
+- **[Area]**: [what it covers]
+
+## Global rules that affect every change
+
+[Rules that cut across the whole product, e.g. "every entity URL is permanent", "one route
+renders every state of an entity", "prices are always shown with currency", "nothing user-
+generated is ever hard-deleted". The reviewer agents check against these.]
+
+## Explicit cuts (do not build)
+
+[Features deliberately out of scope for this version. Claude checks every task against this
+list and stops if it matches. Keep it current; an empty list is fine.]
+
+- [Feature]: [one line on why it is cut, so it is not re-proposed]
+
+## Decisions log
+
+[Short entries for decisions that changed direction, newest first. Enough that a future
+session does not re-open them. Settled, day-to-day decisions go in `STATUS.md` instead.]
+
+- **[YYYY-MM-DD]**: [What was decided, and what it replaced.]

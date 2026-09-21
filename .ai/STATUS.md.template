@@ -1,0 +1,50 @@
+# PROJECT STATUS: [Project name]
+
+**This is the single source of truth for where the build is. Read this file first, every
+session.** Keep it short. History lives in git log and Claude Code transcripts, not here. What
+the product *is* lives in `PROJECT.md`; this file is *where we are*.
+
+> If this file grows past ~150 lines, trim the oldest material. A file that long stops
+> getting read, and gaps get filled by guessing.
+
+## Phases
+
+Sessions are named after the phase they fall in ("Phase 2 Session 7"); the session number
+counts up across the whole project and does not reset per phase. See
+`docs/HOW_TO_OPERATE.md` Job 1.
+
+| Phase | What it covers | Done means | Status |
+|-------|----------------|------------|--------|
+| Phase 0: Foundation | [Scaffold, tooling, this blueprint wired in] | [e.g. Build green, first page renders, agents + hooks in place] | [not started / in progress / done] |
+| Phase 1: [name] | [the recognisable chunk of product this phase delivers] | [what has to work end to end for the phase to close] | not started |
+| Phase 2: [name] | | | not started |
+
+## Recent sessions (last five, newest first)
+
+- **Phase N Session M (YYYY-MM-DD):** [One or two sentences: what happened, what shipped,
+  what's still open. Flag anything surprising.]
+
+## Current state
+
+| Area | Status | Notes |
+|------|--------|-------|
+| Build / checks | [e.g. green] | [last run, anything intentionally disabled] |
+| Tests | [e.g. 12 passing / none configured] | [how to run them, or when to decide on a framework] |
+| Deploy | [e.g. none yet / live at URL] | [last deployed commit, when] |
+| Open blockers | [none] | [what's blocking, who or what it's waiting on] |
+| Uncommitted work | [no] | |
+
+## Next up
+
+[The next concrete task with enough detail to start without clarifying questions. The next
+session starts with "go" and reads this.]
+
+**Watch out for:** [any known trap, flaky thing, or decision already settled that should not be
+re-opened.]
+
+## Settled decisions: do not re-raise
+
+[Anything decided firmly enough that re-litigating it wastes time. Delete the section if
+nothing qualifies yet.]
+
+- **[YYYY-MM-DD]:** [Decision.]

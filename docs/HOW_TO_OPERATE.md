@@ -10,7 +10,7 @@ you do, in order, from the very first session onward.
 Do this once, when the folder is empty and nothing exists yet.
 
 1. **Create the project folder** on your machine.
-2. **Unzip the blueprint into it**: `.claude/`, `docs/`, `CLAUDE.md.template` land at
+2. **Copy the blueprint into it**: `.claude/`, `.ai/`, `docs/`, `CLAUDE.md.template` land at
    the root.
 3. **Make it a git repo**, if it isn't one:
    ```bash
@@ -21,10 +21,12 @@ Do this once, when the folder is empty and nothing exists yet.
 5. **Talk to Claude about the project in plain language**: what it does, who it's
    for, any tech preference you already have (or "you pick"), and that you're not a
    developer. Don't try to write `CLAUDE.md` yourself.
-6. **Ask Claude to draft `CLAUDE.md` and `docs/PROJECT_STATUS.md`** from that
-   conversation. It fills in the brackets from what you just said. Read the draft
-   back, correct anything wrong, especially the "Me" and "Verification" sections,
-   since those set how it treats you from here on.
+6. **Ask Claude to draft `CLAUDE.md`, `.ai/PROJECT.md` and `.ai/STATUS.md`** from that
+   conversation. It fills in the brackets from what you just said. Read the drafts
+   back, correct anything wrong, especially the "Working with" and "Verification"
+   sections of `CLAUDE.md`, since those set how it treats you from here on, and the
+   "Explicit cuts" list in `PROJECT.md`, since that is what stops it building things
+   you did not ask for.
 7. **Leave deploy/test-specific verification rules loose if nothing is built yet.**
    You can't write "deploy is X, Y, Z" before X, Y, Z exist. Tighten those rules once
    the first version is actually running somewhere, that's normal, not a gap.
@@ -35,9 +37,9 @@ Do this once, when the folder is empty and nothing exists yet.
    retrofit it later.
 10. **Let the first real work happen**: scaffolding, first feature, whatever you
     came to build.
-11. **Close with the normal 4-item checklist** (Job 4 below), except
-    `PROJECT_STATUS.md` will honestly say something like "day 0, nothing built yet"
-    and `NEXT_SESSION_PROMPT.md` points at the very first real task.
+11. **Close with `/wrap-up`** (Job 4 below), except `STATUS.md` will honestly say
+    something like "Phase 0, nothing built yet" and its "Next up" points at the very
+    first real task.
 
 From session 2 onward, the loop is Job 2 → Job 3 → Job 4, repeating.
 
@@ -62,40 +64,45 @@ work it belongs to, and where it falls in the project's overall timeline.
    covering the whole build is typical, e.g. "Phase 1: basic setup", "Phase 2: user
    accounts", "Phase 3: core feature", "Phase 4: payments", "Phase 5: polish &
    launch." It doesn't need to be exact, it will change.
-2. **Record it in `docs/PROJECT_STATUS.md`** as a table, one row per phase, with a
-   status (not started / in progress / done). This is the table format your project
-   status file uses, and it's the thing you check to answer "where are we, overall?"
-   without reading a single session recap.
+2. **Record it in `.ai/STATUS.md`** as a table, one row per phase, with what "done"
+   means for that phase and a status (not started / in progress / done). It's the
+   thing you check to answer "where are we, overall?" without reading a single
+   session recap.
 3. **Name every session by its current phase**: "Phase 2 Session 7", in the recap
-   file, the status table, and when you start a session. It's how a pile of
-   `docs/history/` files stays legible instead of becoming an undifferentiated list.
+   and in the status file. It's how the session list stays legible instead of
+   becoming an undifferentiated pile.
 4. **A phase is done when its own defined chunk works end-to-end and is verified.
    Not when every possible improvement to it has been made.** Don't let a phase
    balloon. If new work doesn't fit its definition, that's the start of a new phase,
    not scope creep on the current one.
 5. **Revisit the phase list as you learn things.** Phases you didn't foresee (a bug
    that turns into its own body of work, a pivot) get added; phases that turn out
-   unnecessary get dropped or merged. Update the table in `PROJECT_STATUS.md` when
-   this happens, and say so plainly in that session's recap, don't silently renumber
+   unnecessary get dropped or merged. Update the table in `STATUS.md` when this
+   happens, and say so plainly in that session's recap, don't silently renumber
    history.
 6. **When it's unclear whether something belongs to the current phase or the next
-   one, ask Claude to check the current phase's definition in `PROJECT_STATUS.md`
-   before starting the work.** Keeps the boundary a real decision, not a vibe.
+   one, ask Claude to check the current phase's definition in `STATUS.md` before
+   starting the work.** Keeps the boundary a real decision, not a vibe.
 
 ---
 
 ## Job 2: Starting a session
 
 1. Open the project folder in Claude Code.
-2. Say **"go"**, or paste the contents of `docs/NEXT_SESSION_PROMPT.md`. You don't
+2. Say **"go"**. Claude reads `CLAUDE.md`, `.ai/PROJECT.md` and `.ai/STATUS.md`, and
+   the "Next up" section of `STATUS.md` tells it exactly where to pick up. You don't
    need to re-explain context, that file exists so you never have to.
+
+   For anything that touches the code, say **`/lead`** followed by the task, e.g.
+   `/lead add a settings page`. That puts Claude in lead-developer mode (see "The tools
+   in plain language" below).
 
 ---
 
 ## Job 3: What happens during a session
 
-1. Claude reads `CLAUDE.md` and `docs/PROJECT_STATUS.md` automatically, you never
-   paste those in yourself.
+1. Claude reads `CLAUDE.md`, `.ai/PROJECT.md` and `.ai/STATUS.md` automatically, you
+   never paste those in yourself.
 2. Any action-item for you arrives as a **numbered Job**, not buried in a paragraph.
 3. Claude checks in with you for exactly two things: **entering a secret/password**,
    or a **destructive/go-live action**. Everything else it just does.
@@ -105,35 +112,108 @@ work it belongs to, and where it falls in the project's overall timeline.
    setup, say so.
 5. If Claude hits a decision that's genuinely yours to make (not technical), it asks
    you directly instead of guessing.
+6. If the task is on the "Explicit cuts" list in `.ai/PROJECT.md`, Claude stops and
+   tells you rather than building it. Move it off the list if you've changed your mind.
+7. A second hook blocks the handful of git commands that can lose work (force-push,
+   history rewrites, throwing away uncommitted changes, pushing straight to `main`). If
+   one of those is genuinely needed, Claude will ask you to run it yourself.
 
 ---
 
 ## Job 4: Ending a session
 
-Claude is instructed to do this on its own, check that it actually did:
+Say **`/wrap-up`**. Claude then does this on its own; check that it actually did:
 
-1. `docs/PROJECT_STATUS.md` updated, current state, kept short (including the phase
-   table from Job 1, if the current phase's status changed).
-2. Committed and pushed, confirm "0 unpushed commits" if unsure.
-3. `docs/NEXT_SESSION_PROMPT.md` rewritten for next time, named for the current
-   phase (e.g. "Phase 2 Session 8").
-4. Claude tells you which model ran the session.
+1. `.ai/STATUS.md` updated: phase table, last-five-sessions digest, current state, and
+   "Next up" rewritten for next time, named for the current phase (e.g. "Phase 2
+   Session 8").
+2. The project's Check command run, with the output pasted.
+3. Committed and pushed, with "0 unpushed commits" shown.
+4. A short recap: what shipped, what was verified and how, what was **not** verified,
+   and which model ran the session.
 
 If a session ends without these four, ask for them before you close the terminal.
+
+"Next up" in `STATUS.md` is what the next session reads; git log and Claude Code's own
+transcripts are the history. One file to keep honest.
 
 ---
 
 ## Job 5: Starting another new project later
 
-1. Unzip `ai-coding-blueprint.zip` into the new project's root.
+1. Copy the blueprint into the new project's root.
 2. Rename the three `.template` files (drop the `.template` suffix):
    - `CLAUDE.md.template` → `CLAUDE.md`
-   - `docs/PROJECT_STATUS.md.template` → `docs/PROJECT_STATUS.md`
-   - `docs/NEXT_SESSION_PROMPT.md.template` → `docs/NEXT_SESSION_PROMPT.md`
+   - `.ai/PROJECT.md.template` → `.ai/PROJECT.md`
+   - `.ai/STATUS.md.template` → `.ai/STATUS.md`
 3. Follow Job 0 above for the first session, including sketching phases (Job 1)
    before real building starts.
-4. Leave `.claude/settings.json` and `.claude/hooks/verify-claims.py` untouched.
-   They work for any project as-is.
+4. Leave everything under `.claude/` untouched. It works for any project as-is. The
+   one exception: add your build tool to the allow list in `.claude/settings.json`
+   (e.g. `"Bash(npm *)"`) so you are not asked for permission on every command.
+
+---
+
+## The tools in plain language
+
+Everything under `.claude/` is copied as-is and needs no editing. This is what each piece
+does for you, so you know what to expect and what to ask for.
+
+### Slash commands: things you type
+
+A slash command is a saved instruction. You type it in the session and Claude follows it.
+The ones you will actually use:
+
+| You type | What happens |
+|---|---|
+| `/lead <task>` | Claude acts as the lead developer: breaks the task up, hands each piece to a specialist (below), reviews the result, runs the checks, reports back. **Use this for anything that touches the code.** |
+| `/wrap-up` | Ends the session properly (Job 4). |
+| `/commit` | Writes the commit message and asks before committing. |
+| `/clarify <task>` | Claude asks you questions and writes a plan before touching anything. Good for a task you can't fully describe yet. |
+| `/spec <feature>` then `/task <spec> T1` | For a bigger feature: write it up as numbered tasks first, then do them one at a time. |
+| `/review` | A second look at whatever changed, as a senior engineer would. |
+
+The GitHub helpers (`/issue-read`, `/fix-issue`, `/pr-summary`) need the `gh` command-line
+tool installed and signed in; ignore them if you don't use GitHub issues.
+
+### Subagents: the specialists
+
+A subagent is a separate Claude with its own instructions and its own memory, started by the
+main session for one job and then finished. The main session stays the lead: it plans,
+delegates, checks and reports; the specialists do the work. Four ship with the blueprint:
+
+- **builder** writes the code for one well-defined piece of work
+- **code-reviewer** checks every finished change against your conventions and rules,
+  reports problems, fixes nothing
+- **security-reviewer** looks only for things an attacker could actually exploit, and gives
+  a SAFE TO MERGE or BLOCK verdict
+- **debugger** finds the real cause of a failure before anyone tries a fix
+
+Why this shape: a builder that reviews its own work misses the same things twice. Separate
+eyes catch more, and the reviewer's verdict becomes part of the proof rule 1 asks for.
+
+As the project grows, ask Claude to add specialists for your stack ("draft a `ui-builder`
+agent from `builder.md` that knows our component library") and to add a row to the routing
+table in `/lead` and the list in `CLAUDE.md`.
+
+### Hooks: the things that run without being asked
+
+- **verify-claims** runs when Claude finishes a reply. If the reply says something was
+  tested, verified or deployed and no such command ran, the reply is blocked and Claude has
+  to either run it or say plainly what it did not check.
+- **git-guard** runs before any command. It blocks the handful of git operations that can
+  lose work. You'll be asked to do those yourself, which is the point.
+
+### The two files that hold your project
+
+- **`.ai/PROJECT.md`** is what the product *is*: what it does, who it's for, the words you
+  use, the rules every change respects, the things you have decided not to build. It changes
+  rarely.
+- **`.ai/STATUS.md`** is where the build *is*: phases, the last five sessions, current
+  state, what's next, what's settled. It changes every session.
+
+`CLAUDE.md` pulls `PROJECT.md` in at the top of every session, and points at `STATUS.md`,
+so you never paste either one.
 
 ---
 
@@ -155,7 +235,7 @@ faster model where a mistake is cheap to undo.**
 **What this looks like in practice**
 
 - Start a phase on Opus. Plan it, agree what you are building, write it into
-  `PROJECT_STATUS.md`.
+  `STATUS.md`.
 - Switch to Sonnet and build it. This is the bulk of the hours.
 - Switch back to Opus at the end of the phase to review what actually got built against
   what you planned.
@@ -219,19 +299,19 @@ None of these mean it is broken. They mean the desk is full.
 
 **Why this blueprint fixes it rather than just warning you about it**
 
-Files do not have a context window. `PROJECT_STATUS.md`, `CLAUDE.md`, and the session history
-sit on disk, and a fresh session reads them at full detail, exactly as written, every time.
+Files do not have a context window. `STATUS.md`, `PROJECT.md` and `CLAUDE.md` sit on disk,
+and a fresh session reads them at full detail, exactly as written, every time.
 
 That is the actual reason this blueprint exists in the file form it does. **Anything that only
 lives in a conversation will eventually be forgotten. Anything written to a file will not.**
 
 So when you notice the symptoms above, or when you switch to genuinely different work, start a
-new session. `NEXT_SESSION_PROMPT.md` is what makes that cheap: without a handoff note, starting
-fresh means re-explaining everything, so people avoid it and let sessions sprawl until quality
-degrades. With one, a fresh session costs you a single sentence.
+new session. The "Next up" section of `STATUS.md` is what makes that cheap: without it,
+starting fresh means re-explaining everything, so people avoid it and let sessions sprawl
+until quality degrades. With it, a fresh session costs you a single word.
 
 **The habit worth building:** when a decision matters, ask for it to be written into
-`PROJECT_STATUS.md` rather than left in the chat. That one sentence is the difference between a
+`STATUS.md` rather than left in the chat. That one sentence is the difference between a
 decision that survives and one that quietly evaporates around hour four.
 
 ### 3. One specific request beats five vague ones
@@ -258,13 +338,14 @@ across five sessions each pay to rebuild it.
 The reverse of point 2, and both are the same rule: **context should match the work.** Group
 what belongs together, separate what does not.
 
-### 6. Ask for research to be delegated
+### 6. Let the specialists carry the weight
 
-For anything that means reading a lot of files or searching broadly, ask for it to be handled
-by a subagent. The searching happens separately and you get the answer back, instead of every
-file it opened staying in your session forever.
+This is what `/lead` and the subagents are for. Every file a builder or reviewer opens stays
+in *its* memory, not the main session's. The lead session sees briefs and reports, so it stays
+light for hours where a single session doing everything itself would have filled its desk by
+lunch.
 
-Just say: "use a subagent for this search."
+For a one-off broad search, the same idea: "use a subagent for this search."
 
 ### The one-line version
 
@@ -283,10 +364,11 @@ specific. Model choice is worth maybe a third of what avoiding rework is worth.
 | Reviewing a finished phase | Opus |
 | Both models stuck on the same problem | Fable |
 | Every session start | Job 2, say "go" |
+| Anything touching the code | `/lead <task>` |
 | Mid-session | Answer direct questions; nothing else needed |
 | Secrets requested | Type/paste them yourself, Claude never enters these |
 | Destructive or go-live action proposed | Say yes or no, your word is the gate |
-| Session end | Job 4, confirm the 4-item checklist happened |
+| Session end | Job 4, say `/wrap-up`, confirm the 4 items happened |
 | Next new project | Job 5 |
 
 You're not expected to read code or logs. The verification rule exists specifically
