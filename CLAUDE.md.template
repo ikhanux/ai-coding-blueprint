@@ -68,8 +68,8 @@ Deeper model where a mistake is expensive, faster model where it is cheap to und
 | Planning, phases, architecture, reviewing a finished phase, hard debugging | Opus |
 | A problem both have already failed on more than once | Fable |
 
-Subagents pin their own model in their frontmatter (`code-reviewer` and `security-reviewer`
-on Opus, `debugger` and `builder` on Sonnet). Say which model ran the session in the
+Subagents pin their own model in their frontmatter (`code-reviewer`, `security-reviewer` and
+`ux-reviewer` on Opus; `builder`, `debugger` and `responsive-reviewer` on Sonnet). Say which model ran the session in the
 `/wrap-up` recap. If a planning or review task arrives on the fast model, say so rather than
 proceeding quietly.
 
@@ -151,6 +151,8 @@ command isn't invoked:
 - Unclear failure → `debugger` before any fix
 - Every finished change → `code-reviewer`; plus `security-reviewer` when it renders external
   content, touches URLs / storage / tokens / auth, or adds a dependency
+- Every finished screen or flow → `ux-reviewer` and `responsive-reviewer`, alongside
+  `code-reviewer` (delete this line if the project has no user interface)
 - Task is in "Explicit cuts" in `.ai/PROJECT.md` → stop and tell the user
 
 Exceptions where the main session may edit directly: config files, docs, and `.claude/` itself.
@@ -166,6 +168,9 @@ and add a row here and in `/lead`'s routing table.]
 - `code-reviewer`: convention and correctness review after any change; reports, doesn't fix
 - `security-reviewer`: exploitable findings only; verdict SAFE TO MERGE or BLOCK
 - `debugger`: root-causes failures before anyone fixes them
+- `ux-reviewer`: usability, hierarchy, missing states, accessibility basics; reports only
+- `responsive-reviewer`: breakpoints, touch targets, overflow; hands back a manual
+  render-check list it cannot run itself
 
 **Guardrails** (`.claude/settings.json` + `.claude/hooks/git-guard.sh`)
 

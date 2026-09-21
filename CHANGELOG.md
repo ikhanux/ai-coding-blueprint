@@ -37,8 +37,10 @@ new layout, so read "Migrating from 1.x" below before adopting.
   `/clarify`, `/spec`, `/task`, `/review`, `/explore`, `/issue-read`, `/fix-issue`,
   `/pr-summary`. None hardcode a build tool; they all read the **Commands** table in
   `CLAUDE.md`.
-- **Four subagents** in `.claude/agents/`: `builder` (Sonnet), `code-reviewer` (Opus),
-  `security-reviewer` (Opus), `debugger` (Sonnet). Reviewers report and never fix.
+- **Six subagents** in `.claude/agents/`: `builder` (Sonnet), `code-reviewer` (Opus),
+  `security-reviewer` (Opus), `ux-reviewer` (Opus), `responsive-reviewer` (Sonnet),
+  `debugger` (Sonnet). Reviewers report and never fix. `responsive-reviewer` cannot render
+  a page, so it ends every review with a manual check list rather than a verdict.
 - **Lead-developer delegation policy** in `CLAUDE.md.template` and `/lead`: the main session
   plans, delegates, verifies and reports; it does not write application code or review its
   own work.

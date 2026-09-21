@@ -30,6 +30,8 @@ Before delegating anything:
 | Something is broken and the cause isn't obvious | `debugger` | Diagnose before anyone fixes |
 | Any change to application code is finished | `code-reviewer` | **Always**, not just when asked |
 | Change renders external content, touches URLs / storage / tokens / auth, or adds a dependency | `security-reviewer` | Run alongside `code-reviewer` |
+| A finished screen or multi-step flow | `ux-reviewer` | Usability, hierarchy, missing states, accessibility basics. Alongside `code-reviewer`, not instead of it |
+| A finished screen or layout-affecting change | `responsive-reviewer` | Breakpoints, touch targets, overflow. Hands back a manual render-check list it cannot run itself |
 
 [Add rows here as you add specialists for your stack. Keep this table and the "Subagents"
 list in `CLAUDE.md` in sync.]
@@ -41,10 +43,12 @@ If a unit doesn't fit any row, say so and ask the user rather than doing it your
 1. `Explore` (if needed) → gather context, run in parallel
 2. `builder` → sequential when one unit depends on another, parallel when independent
 3. `debugger` → only if a builder reports a failure it couldn't resolve
-4. Review, in parallel: `code-reviewer` + `security-reviewer` (when it applies), on the
-   combined result
+4. Review, in parallel: `code-reviewer` + `security-reviewer` (when it applies) +
+   `ux-reviewer` + `responsive-reviewer` (for anything with a screen), on the combined result
 5. If review returns findings: send them back to the builder that owns that code, then
-   re-review. Max two rounds; after that escalate to the user.
+   re-review. Max two rounds; after that escalate to the user. `responsive-reviewer`'s
+   manual-check list goes to the user regardless; it is never satisfied by another agent's
+   fix alone.
 
 Give every agent a self-contained brief: the exact files, the conventions that apply, what
 "done" looks like, and which commands from `CLAUDE.md` § Commands to run. Don't assume it has

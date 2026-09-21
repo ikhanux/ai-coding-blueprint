@@ -49,7 +49,7 @@ It gives your project things it does not have by default:
 | **Direction** | A phase structure, so you always know what you are building now and what comes next. |
 | **Continuity** | One always-current status file that ends with "Next up". Start tomorrow by saying "go". |
 | **Proof** | A hook that blocks claims of tested or deployed work when no such command ran. Building on a step that never happened is the most expensive rework there is. |
-| **A team** | A lead-developer mode that hands each piece of work to a specialist: a builder, a reviewer, a security reviewer, a debugger. Separate eyes catch what one pair misses. |
+| **A team** | A lead-developer mode that hands each piece of work to a specialist: a builder, a code reviewer, a security reviewer, a UX reviewer, a responsive reviewer, a debugger. Separate eyes catch what one pair misses. |
 | **Guardrails** | A hook that blocks the git commands that can lose work, so the AI asks you instead of doing it. |
 | **Efficiency** | Which model to use for planning, building and escalation, plus the six things that actually control what a project costs you. |
 
@@ -92,7 +92,8 @@ docs/HOW_TO_OPERATE.md             read this one yourself, start to finish
 .claude/hooks/verify-claims.py     blocks unproven "verified / tested / deployed"
 .claude/hooks/git-guard.sh         blocks the git commands that lose work
 .claude/commands/                  11 slash commands: /lead, /wrap-up, /commit, /spec ...
-.claude/agents/                    4 subagents: builder, code-reviewer, security-reviewer, debugger
+.claude/agents/                    6 subagents: builder, code-reviewer, security-reviewer,
+                                   ux-reviewer, responsive-reviewer, debugger
 
 CHANGELOG.md                       what changed, and how to update safely
 LICENSE                            MIT
@@ -121,9 +122,11 @@ LICENSE                            MIT
 7. **Slash commands** (`.claude/commands/`). `/lead <task>` puts the AI in lead-developer
    mode. `/wrap-up` ends the session properly. `/clarify`, `/spec`, `/task`, `/review`,
    `/commit`, `/explore` cover the rest of the loop. Three GitHub helpers if you use issues.
-8. **Subagents** (`.claude/agents/`). A builder that writes, a reviewer that only reports, a
-   security reviewer that only flags what is exploitable, a debugger that finds the cause
-   before anyone fixes. The main session stays the lead and never reviews its own work.
+8. **Subagents** (`.claude/agents/`). A builder that writes, a code reviewer that only
+   reports, a security reviewer that only flags what is exploitable, a UX reviewer for
+   hierarchy, missing states and accessibility, a responsive reviewer for breakpoints and
+   touch targets, and a debugger that finds the cause before anyone fixes. The main session
+   stays the lead and never reviews its own work.
 9. **The settings file** (`.claude/settings.json`). Registers both hooks, pre-allows
    read-only git, denies reading `.env`. Add your build tool to the allow list and you are done.
 
@@ -178,7 +181,7 @@ difference. The rule still applies; the hook enforces the rest.
 The hooks, commands and agents are Claude Code specific, because they use Claude Code's hook,
 command and subagent systems. The three files you fill in work with any AI coding tool.
 
-The four subagents are deliberately generic. As your project grows you will want specialists
+The six subagents are deliberately generic. As your project grows you will want specialists
 that know your stack. Ask the AI to draft them from `builder.md`; the operate guide says how.
 
 The templates are a starting shape, not a finished process. Rewrite the rules to match how your

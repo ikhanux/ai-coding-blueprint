@@ -180,7 +180,7 @@ tool installed and signed in; ignore them if you don't use GitHub issues.
 
 A subagent is a separate Claude with its own instructions and its own memory, started by the
 main session for one job and then finished. The main session stays the lead: it plans,
-delegates, checks and reports; the specialists do the work. Four ship with the blueprint:
+delegates, checks and reports; the specialists do the work. Six ship with the blueprint:
 
 - **builder** writes the code for one well-defined piece of work
 - **code-reviewer** checks every finished change against your conventions and rules,
@@ -188,6 +188,11 @@ delegates, checks and reports; the specialists do the work. Four ship with the b
 - **security-reviewer** looks only for things an attacker could actually exploit, and gives
   a SAFE TO MERGE or BLOCK verdict
 - **debugger** finds the real cause of a failure before anyone tries a fix
+- **ux-reviewer** checks a finished screen the way a user would meet it: what's first, what's
+  missing (empty, loading, error states), can it be used from a keyboard
+- **responsive-reviewer** checks a screen will hold up on a phone: breakpoints, thumb-sized
+  targets, nothing overflowing. It can't open a browser, so it ends with a short list of
+  what to look at yourself
 
 Why this shape: a builder that reviews its own work misses the same things twice. Separate
 eyes catch more, and the reviewer's verdict becomes part of the proof rule 1 asks for.
