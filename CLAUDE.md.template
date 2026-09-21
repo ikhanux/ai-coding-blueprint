@@ -1,54 +1,65 @@
-# Memory
+# CLAUDE.md
 
-## Me
-[Your name]: [your role, e.g. "founder/operator of X, building Y"]. [One line on how
-you want Claude to work with you, e.g. "Not a developer: explain changes before making
-them, confirm before anything destructive or irreversible, write plainly (no dense
-formatting)." Or the opposite: "Experienced engineer, skip the hand-holding."]
+Read at the start of every session. Fill in every `[BRACKET]` once; delete any rule that
+does not apply to this project rather than leaving it sitting there doing nothing.
 
-## Projects
-| Name | What |
-|------|------|
-| **[Project name]** | [One or two sentences: what it is, what it's built on, how it's deployed.] |
+## What this project is
 
-## Terms
-| Term | Meaning |
-|------|---------|
-| [Any acronym, internal name, or jargon you'll use in chat] | [Plain definition] |
-| [A known past incident worth remembering] | [What happened, what fixed it, so it isn't re-investigated] |
+@.ai/PROJECT.md
+
+[Two or three product-level invariants worth respecting in every change, e.g. "Money is
+integer minor units plus a currency code, never floats." / "Timestamps are stored in UTC."
+Delete this paragraph if nothing qualifies yet.]
+
+## Working with [your name]
+
+[Your name] is [your role, e.g. "the founder/operator of this product"] and runs the build
+through Claude Code rather than writing the code by hand. Work accordingly:
+
+- Explain what you're about to change and why before changing it; keep the explanation
+  plain, no dense formatting, no jargon without a one-line meaning.
+- Confirm before anything destructive or irreversible (deleting files, rewriting history,
+  changing config that other sessions depend on).
+- Minimise check-ins: batch questions, and only interrupt for decisions that are genuinely
+  [your name]'s to make (product scope, design direction, anything in "Settled decisions"
+  in `.ai/STATUS.md`).
+- The plan of record is `.ai/STATUS.md` (current state only, kept short). `.ai/PROJECT.md`
+  is what the product is; `.ai/STATUS.md` is where we are.
+
+[Or, if you are an experienced engineer, replace the bullets with: "Skip the hand-holding.
+Confirm only before destructive actions."]
 
 ## Verification: HARD RULES, no exceptions
-[Name of user] [is/is not] a developer and [can/cannot] catch a false "done" by eye.
-These are the failures that actually keep happening on this project, treat each as a
-blocker, not a reminder. Delete any rule that doesn't apply; don't leave an inert one.
 
-1. **Never write "verified", "working", "fixed", "deployed" or "confirmed" without
-   pasting the command output that proves it, in the same reply.** No output means say
-   what you did and did not check. "The code looks right" is not verification.
-2. **Committed is not shipped.** [Where you actually test the live thing, e.g. "User
-   tests on the deployed URL. A change is done only after deploy AND confirming it's
-   in the live bundle/output."]
-3. **Deploy is [describe your real deploy process, how many services, what order, any
-   step that's easy to forget].**
-4. **[Your equivalent of "tsc is not visual verification"] is not [what it doesn't
-   prove].** [What actually proves the thing is done, e.g. "Render the page and look
-   before saying UI is done."]
-5. **[Any gap between test environment and production, e.g. "A green suite cannot see
-   the live DB" / "the staging config differs from prod"].** Check a real copy before
-   trusting anything recently added.
-6. **Run tests with [your required env var / setup step], or [what breaks if you
-   don't].** Never run two test runs or two deploys at once, [why, if relevant, e.g.
-   "they clobber each other"].
+[Your name] [can / cannot] catch a false "done" by reading the code. Treat each of these as a
+blocker, not a reminder.
+
+1. **Never write "verified", "working", "fixed", "done" or "confirmed" without pasting the
+   command output that proves it, in the same reply.** No output means say what you did and
+   did not check. "The code looks right" is not verification.
+2. **[Your typecheck / lint / compile step] is not [what it doesn't prove].** [e.g. "A green
+   typecheck proves the types line up, not that the page looks right. UI work is done only
+   after the page is rendered and looked at."]
+3. **Committed is not shipped.** [Where the live thing is actually tested, e.g. "A change is
+   done only after deploy AND confirming it's in the live output." If there is no deploy yet:
+   "There is no deploy yet; until there is, done means rendered and reviewed, not committed."]
+4. **Every change to [your source folder, e.g. `src/`] goes through `code-reviewer` before it's
+   called done.** A review verdict is part of the evidence, not optional polish.
+5. **Never run two [dev servers / builds / test runs / deploys] at once.** They clobber each
+   other's output and the wrong one gets checked.
+6. **[Any gap between your test environment and production, e.g. "A green suite cannot see
+   the live DB; check a real copy before trusting anything recently added." Delete if none.]**
 7. **If you did not check it, say so.** An honest gap is always cheaper than a wrong
    confirmation.
 
-**Rule 1 is enforced by a Stop hook**, `.claude/hooks/verify-claims.py`. If a reply
-claims something was deployed / tested / verified and no matching command ran anywhere
-in the session, the turn is blocked and you are told which check is missing. Denials
-("not yet deployed") and quoted words never trip it. Run the check or state the gap.
-Do not reword the claim to slip past it.
+**Rule 1 is enforced by a Stop hook**, `.claude/hooks/verify-claims.py`. If a reply claims
+something was tested / verified / deployed and no matching command ran anywhere in the
+session, the turn is blocked and you're told which check is missing. Denials ("not yet
+verified") and quoted words never trip it. Run the check or state the gap. Do not reword the
+claim to slip past it.
 
 ## Models
+
 Deeper model where a mistake is expensive, faster model where it is cheap to undo.
 
 | Work | Model |
@@ -57,18 +68,122 @@ Deeper model where a mistake is expensive, faster model where it is cheap to und
 | Planning, phases, architecture, reviewing a finished phase, hard debugging | Opus |
 | A problem both have already failed on more than once | Fable |
 
-Say which model ran the session in the end-of-session recap. If a planning or review task
-arrives on the fast model, say so rather than proceeding quietly.
+Subagents pin their own model in their frontmatter (the reviewers and `ui-ux-designer` on
+Opus; the builders, `ux-copy`, `debugger` and `responsive-reviewer` on Sonnet). Say which model ran the session in the
+`/wrap-up` recap. If a planning or review task arrives on the fast model, say so rather than
+proceeding quietly.
 
-## Preferences
-- [How you want sessions to end, e.g. "End every session with: docs updated + commit
-  & push (0 unpushed) + next-session prompt + model."]
-- [How much you want to be interrupted, e.g. "Minimize check-ins, only X and Y
-  genuinely need me."]
-- [Any standing formatting/style rule, e.g. "Write plainly, no dense formatting" or
-  "Always apply smooth UI transitions by default."]
-- [Where the plan of record lives, e.g. "The plan of record is docs/PROJECT_STATUS.md
-  (current state only, kept short)."]
-- [How session history is recorded, e.g. "Session recaps go in their own
-  docs/history/ file; PROJECT_HISTORY.md is just the index. Never append a recap to
-  PROJECT_STATUS.md."]
+## Session end
+
+End every session with `/wrap-up`: `.ai/STATUS.md` updated (current state, last-5-sessions
+digest, next up, any newly settled decisions) → the **Check** command below green → changes
+committed via `/commit` → 0 unpushed commits → model named. History lives in git and Claude
+Code's own transcripts.
+
+## Commands
+
+**Every slash command and subagent reads this section to know what to run.** Keep it
+accurate. If a command does not exist yet, write "none yet" rather than guessing.
+
+| Purpose | Command |
+|---|---|
+| Run / dev server | `[e.g. npm run dev]` |
+| **Check** (must be green before anything is called done) | `[e.g. npm run typecheck && npm run lint]` |
+| Test | `[e.g. npm test, or "none yet"]` |
+| Format | `[e.g. npm run format, or "none"]` |
+| Build | `[e.g. npm run build]` |
+| Deploy | `[e.g. ./deploy.sh, or "none yet"]` |
+
+[If your deploy has several steps or services, list them in order here. A step that is easy
+to forget is exactly the one to write down.]
+
+## Architecture
+
+[Only what a fresh session needs to place a change correctly. Keep it to a handful of
+bullets; the code is the detail.]
+
+- **Entry point**: `[file]` does `[what]`.
+- **Where new things go**: `[e.g. pages live in src/pages/, one file per route, registered
+  in src/router.ts]`.
+- **Styling / UI kit**: `[e.g. Tailwind + component library X; tokens live in Y]`.
+- **Data**: `[e.g. all data arrives as props from the backend; no client-side fetching]`.
+- **State**: `[e.g. no global store; form + URL state only]`.
+
+## Conventions
+
+- [Formatting: e.g. "No semicolons, double quotes, 2-space indent; run the Format command
+  rather than hand-formatting."]
+- [Linting / strictness: e.g. "ESLint recommended + strict TypeScript; unused locals are
+  errors."]
+- [Import style, naming, file layout, anything the reviewer should hold the code to.]
+
+## Claude Code tooling
+
+Project-level config lives in `.claude/`. Machine-specific overrides go in
+`.claude/settings.local.json` (gitignored via `*.local`). Never commit keys there.
+
+**Workflow commands** (`.claude/commands/`)
+
+| Command | Use it for |
+|---|---|
+| `/lead <task>` | Lead-developer mode: triage, delegate to subagents, review, report |
+| `/clarify <task>` | Ask questions + produce a plan before any code is written |
+| `/spec <feature>` | Write an implementation spec to `.ai/specs/<slug>.md` |
+| `/task <spec> TN` | Implement exactly one task from a spec |
+| `/review [target]` | Senior-engineer review of changed files |
+| `/commit` | Draft a conventional commit message for staged changes |
+| `/wrap-up` | End-of-session: update `.ai/STATUS.md`, verify, commit, push, name the model |
+| `/goal <goal>` | Build → check → separate evaluator → repeat, max 5 rounds, honest report |
+| `/explore <task>` | Parallel codebase exploration before a larger change |
+| `/issue-read <#>` · `/fix-issue <#>` · `/pr-summary` | GitHub issue/PR helpers (need `gh` CLI) |
+
+Typical feature flow: `/lead <task>` for anything touching `[your source folder]`; or manually
+`/clarify` → `/spec` → `/task … T1` → `/review` → `/commit` per task.
+
+**Delegation policy: act as lead developer**
+
+Every task that touches `[your source folder]` is routed through the subagents below. The main
+session plans, delegates, verifies, and reports rather than writing application code directly.
+Use `/lead <task>` for the full orchestration flow, but apply the same routing even when the
+command isn't invoked:
+
+- Codebase questions → `Explore` (parallel when independent)
+- Layout / hierarchy / interaction decision not already established → `ui-ux-designer`
+  (design brief, no code) before anything is built
+- New screen / route → `page-scaffolder`; new or changed component or styling → `ui-builder`
+- Any new or changed user-facing text → `ux-copy`
+- Any other new or changed code → `builder`
+- Unclear failure → `debugger` before any fix
+- Every finished change → `code-reviewer`; plus `security-reviewer` when it renders external
+  content, touches URLs / storage / tokens / auth, or adds a dependency
+- Every finished screen or flow → `ux-reviewer` and `responsive-reviewer`, alongside
+  `code-reviewer` (delete this line if the project has no user interface)
+- Task is in "Explicit cuts" in `.ai/PROJECT.md` → stop and tell the user
+
+Exceptions where the main session may edit directly: config files, docs, and `.claude/` itself.
+
+[If the project has no user interface, delete the UI agents and their lines above. As the
+project grows, add specialists for your stack (a `migration-writer`, an `api-builder`): ask
+Claude to draft one from `builder.md` and add a row here and in `/lead`'s routing table.]
+
+**Subagents** (`.claude/agents/`)
+
+- `builder`: implements one well-defined unit of work, following the conventions above
+- `ui-ux-designer`: layout / hierarchy / interaction design briefs, before implementation
+- `page-scaffolder`: new routed screens; `ui-builder`: new or changed components
+- `ux-copy`: user-facing text, held to `.ai/PROJECT.md`'s Terms and Messaging rules
+- `code-reviewer`: convention and correctness review after any change; reports, doesn't fix
+- `security-reviewer`: exploitable findings only; verdict SAFE TO MERGE or BLOCK
+- `debugger`: root-causes failures before anyone fixes them
+- `ux-reviewer`: usability, hierarchy, missing states, accessibility basics; reports only
+- `responsive-reviewer`: breakpoints, touch targets, overflow; hands back a manual
+  render-check list it cannot run itself
+
+**Guardrails and hooks** (`.claude/settings.json` + `.claude/hooks/`)
+
+Read-only git commands are pre-allowed; add your build tool to the allow list (e.g.
+`Bash(npm *)`). `git-guard.sh` (PreToolUse) blocks force-pushes, pushes to `main`,
+`reset --hard`, `rebase`, `branch -D`, `clean -f`, and discarding all working changes; do
+those manually if genuinely needed. `format-on-edit.py` (PostToolUse) runs the Format command
+above after every edit. A SessionStart hook shows git state when a session opens. The status
+line shows model, folder, branch and context used.
